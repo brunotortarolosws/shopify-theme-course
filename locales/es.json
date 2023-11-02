@@ -1,0 +1,8 @@
+{
+  "general": {
+    "404": {
+      "title": "Algo salió mal",
+      "subtext_html": "El sitio que buscas no ha sido encontrado"
+    }
+  }
+}

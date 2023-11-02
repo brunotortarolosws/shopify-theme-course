@@ -19,3 +19,9 @@ html, body {}
 .inner-hero-section img {
   object-fit: cover;
 }
+
+.login-form {
+  margin: auto;
+  max-width: 330px;
+  width: 100%;
+}
