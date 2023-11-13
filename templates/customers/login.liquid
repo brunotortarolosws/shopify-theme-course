@@ -10,5 +10,20 @@
       <input class="form-control rounded-0 my-2" type="password" name="customer[password]" />
       <input type="submit" value="Log In" class="btn btn-primary btn-lg w-100 rounded-0">
     {% endform %}
+
+    <a href="#recover" class="text-center" id="forgotPassword">Forgot your password?</a>
+  </div>
+
+  <div id="passwordResetForm" class="d-none forgot-password-form">
+    {% form 'recover_customer_password' %}
+      {% include 'form-errors' %}
+
+      <div class="col-12">
+        <label for="resetPassword" class="form-label">Email Address</label>
+        <input type="email" class="form-control" name="email" id="resetPassword">
+      </div>
+
+      <input type="submit" value="Reset Password" class="btn btn-secondary">
+    {% endform %}
   </div>
 </div>

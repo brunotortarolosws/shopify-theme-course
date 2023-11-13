@@ -28,3 +28,25 @@ if (document.getElementById('AddressCountryNew')) {
     provinceSelector.innerHTML = provinceOptions;
   });
 }
+
+
+if (document.getElementById('forgotPassword')) {
+  document.getElementById('forgotPassword').addEventListener('click', () => {
+    const element = document.querySelector('#passwordResetForm');
+
+    if (element.classList.contains('d-none')) {
+      element.classList.remove('d-none');
+    }
+  });
+}
+
+
+const localeItems =   document.querySelectorAll('#localeItem');
+if (localeItems.length) {
+  localeItems.forEach(l => {
+    l.addEventListener('click', () => {
+      document.getElementById('localeCode').value = l.getAttribute("lang");
+      document.getElementById('localization_form_tag').submit();
+    })
+  });
+}

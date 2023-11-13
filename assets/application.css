@@ -20,8 +20,55 @@ html, body {}
   object-fit: cover;
 }
 
-.login-form {
+.login-form, .forgot-password-form {
   margin: auto;
   max-width: 330px;
   width: 100%;
+}
+
+.dropup {
+  position: relative;
+  display: inline-block;
+}
+
+.locale-btn {
+  background-color: #3298DB;
+  border-radius: 50%;
+  bottom: 25px;
+  box-shadow: -1px 0px 20px 0px #00000066;
+  color: #FFF;
+  font-size: 20px;
+  max-height: 70px;
+  max-width: 70px;
+  padding: 6px;
+  position: fixed;
+  right: 25px;
+}
+
+.locale-btn img {
+  height: 50px;
+  width: 50px;
+}
+
+.dropup-content {
+  background-color: #F1F1F1;
+  bottom: 80px;
+  box-shadow: -1px 0px 20px 0px #00000066;
+  display: none;
+  min-width: 210px;
+  position: fixed;
+  right: 25px;
+  z-index: 1;
+}
+
+.dropup-content a {
+  color: #000;
+  display: block;
+  font-size: 17px;
+  padding: 15px 10px;
+  text-align: center;
+}
+
+.dropup:hover .dropup-content {
+  display: block;
 }
