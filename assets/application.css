@@ -10,6 +10,9 @@ html, body {}
 .inner-hero-section img,
 .inner-hero-section svg {
   bottom: 0;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
   position: absolute;
   top: 0;
   width: 100%;
@@ -71,4 +74,12 @@ html, body {}
 
 .dropup:hover .dropup-content {
   display: block;
+}
+
+#shopify-section-translation {
+  position: fixed;
+}
+
+.featured-collection-section .card {
+  z-index: -1;
 }

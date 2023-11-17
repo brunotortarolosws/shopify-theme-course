@@ -1,12 +1,12 @@
 <section class="container py-4">
   <h2 class="text-center my-3">{{ section.settings.title }}</h2>
-  <div class="row">
+  <div class="row g-3 row-cols-md-3 row-cols-1">
     {% for product in collections[section.settings.featured_collection].products %}
       {% assign image = product.featured_media.preview_image %}
       <div class="col">
         <div class="card">
           {% if image != blank %}
-            <img class="card-img-top" src="{{ image | img_url: 'medium' }}" alt="{{ product.title }}" width="180" height="auto" />
+            <img class="card-img-top w-100" src="{{ image | img_url: 'medium' }}" alt="{{ product.title }}" />
           {% else %}
             {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
           {% endif%}
