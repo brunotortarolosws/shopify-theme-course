@@ -51,7 +51,6 @@ if (localeItems.length) {
   });
 }
 
-
 const productInfoAnchors = document.querySelectorAll('#productInfoAnchor');
 const productModal = new bootstrap.Modal(document.getElementById('productInfoModal'), {});
 if (productInfoAnchors.length) {
@@ -61,6 +60,11 @@ if (productInfoAnchors.length) {
       fetch(url)
         .then(res => res.json())
         .then(data => {
+          const variants = data.variants;
+          const variantSelect = document.getElementById('variantSelect');
+          variants.forEach(v => {
+            variantSelect.options[variantSelect.options.length] = new Option(v.option1, JSON.stringify(v));
+          });
 
           document.getElementById('productInfoImg').src = data.images[0];
           document.getElementById('productInfoTitle').innerText = data.title;
@@ -72,3 +76,33 @@ if (productInfoAnchors.length) {
     });
   });
 }
+
+
+const modalAddToCartForm = document.getElementById('addToCartForm');
+
+modalAddToCartForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const { id, available } = JSON.parse(document.getElementById('variantSelect').value);
+  const variantQty = document.getElementById('variantQty').value;
+
+  if (available) {
+    const formData = {
+      items: [
+        {
+          id: id,
+          quantity: variantQty,
+        }
+      ]
+    };
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(res => res.json())
+      .catch( err => console.error(err));
+  }
+});
