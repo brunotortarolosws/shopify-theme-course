@@ -41,12 +41,34 @@ if (document.getElementById('forgotPassword')) {
 }
 
 
-const localeItems =   document.querySelectorAll('#localeItem');
+const localeItems = document.querySelectorAll('#localeItem');
 if (localeItems.length) {
   localeItems.forEach(l => {
     l.addEventListener('click', () => {
       document.getElementById('localeCode').value = l.getAttribute("lang");
       document.getElementById('localization_form_tag').submit();
     })
+  });
+}
+
+
+const productInfoAnchors = document.querySelectorAll('#productInfoAnchor');
+const productModal = new bootstrap.Modal(document.getElementById('productInfoModal'), {});
+if (productInfoAnchors.length) {
+  productInfoAnchors.forEach(i => {
+    i.addEventListener('click', () => {
+      const url = `/products/${i.getAttribute('product-handle')}.js`
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+
+          document.getElementById('productInfoImg').src = data.images[0];
+          document.getElementById('productInfoTitle').innerText = data.title;
+          document.getElementById('productInfoPrice').innerText = i.getAttribute('product-price');
+          document.getElementById('productInfoDescription').innerText = data.description;
+
+          productModal.show();
+        });
+    });
   });
 }
