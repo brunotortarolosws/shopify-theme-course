@@ -52,57 +52,80 @@ if (localeItems.length) {
 }
 
 const productInfoAnchors = document.querySelectorAll('#productInfoAnchor');
-const productModal = new bootstrap.Modal(document.getElementById('productInfoModal'), {});
-if (productInfoAnchors.length) {
-  productInfoAnchors.forEach(i => {
-    i.addEventListener('click', () => {
-      const url = `/products/${i.getAttribute('product-handle')}.js`
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          const variants = data.variants;
-          const variantSelect = document.getElementById('variantSelect');
-          variants.forEach(v => {
-            variantSelect.options[variantSelect.options.length] = new Option(v.option1, JSON.stringify(v));
+
+if (document.getElementById('productInfoModal')) {
+  const productModal = new bootstrap.Modal(document.getElementById('productInfoModal'), {});
+
+  if (productInfoAnchors.length) {
+    productInfoAnchors.forEach(i => {
+      i.addEventListener('click', () => {
+        const url = `/products/${i.getAttribute('product-handle')}.js`
+        fetch(url)
+          .then(res => res.json())
+          .then(data => {
+            const variants = data.variants;
+            const variantSelect = document.getElementById('variantSelect');
+            variantSelect.innerHTML = '';
+
+            variants.forEach(v => {
+              variantSelect.options[variantSelect.options.length] = new Option(v.option1, JSON.stringify(v));
+            });
+
+            document.getElementById('productInfoImg').src = data.images[0];
+            document.getElementById('productInfoTitle').innerText = data.title;
+            document.getElementById('productInfoPrice').innerText = i.getAttribute('product-price');
+            document.getElementById('productInfoDescription').innerText = data.description;
+
+            productModal.show();
           });
-
-          document.getElementById('productInfoImg').src = data.images[0];
-          document.getElementById('productInfoTitle').innerText = data.title;
-          document.getElementById('productInfoPrice').innerText = i.getAttribute('product-price');
-          document.getElementById('productInfoDescription').innerText = data.description;
-
-          productModal.show();
-        });
+      });
     });
+  }
+}
+
+const updateCartTotal = () => {
+  fetch('/cart.js').then(res => res.json())
+   .then(data => {
+    const cartCounter = document.getElementById('cartTotalItems');
+    if (cartCounter) {
+      cartCounter.innerText = data.item_count;
+    }
+   })
+   .catch(err => console.error(err));
+}
+
+if (document.getElementById('addToCartForm')) {
+  const modalAddToCartForm = document.getElementById('addToCartForm');
+
+  modalAddToCartForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const { id, available } = JSON.parse(document.getElementById('variantSelect').value);
+    const variantQty = document.getElementById('variantQty').value;
+
+    if (available) {
+      const formData = {
+        items: [
+          {
+            id: id,
+            quantity: variantQty,
+          }
+        ]
+      };
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+        .then(res => {
+          res.json();
+          updateCartTotal();
+        })
+        .catch( err => console.error(err));
+    }
   });
 }
 
-
-const modalAddToCartForm = document.getElementById('addToCartForm');
-
-modalAddToCartForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const { id, available } = JSON.parse(document.getElementById('variantSelect').value);
-  const variantQty = document.getElementById('variantQty').value;
-
-  if (available) {
-    const formData = {
-      items: [
-        {
-          id: id,
-          quantity: variantQty,
-        }
-      ]
-    };
-
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-      .then(res => res.json())
-      .catch( err => console.error(err));
-  }
-});
+document.addEventListener('DOMContentLoaded', () => updateCartTotal());
