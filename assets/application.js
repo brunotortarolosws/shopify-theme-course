@@ -129,3 +129,45 @@ if (document.getElementById('addToCartForm')) {
 }
 
 document.addEventListener('DOMContentLoaded', () => updateCartTotal());
+
+
+const predictiveSearchInput = document.getElementById('searchInputField');
+const offcanvasSearch = document.getElementById('offcanvasSearchResult');
+const bsOffcanvas = new bootstrap.Offcanvas(offcanvasSearch);
+let timer;
+
+if (predictiveSearchInput) {
+  predictiveSearchInput.addEventListener('input', () => {
+    clearTimeout(timer);
+
+    if (predictiveSearchInput.value)
+    timer = setTimeout(() => {
+      fetchPredictiveSearch();
+    }, 3000);
+  });
+}
+
+const fetchPredictiveSearch = () => {
+  fetch(`/search/suggest.json?q=${predictiveSearchInput.value}&resources[type]=product`)
+    .then(res => res.json())
+    .then(({ resources }) => {
+      const { products } = resources.results;
+      let contents = document.getElementById('searchResultsBody');
+      contents.innerHTML = '';
+
+      products.forEach(p => {
+        contents.innerHTML += `
+          <div class="card" style="width: 19rem;">
+            <img src="${p.image}" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">${p.title}</h5>
+              <p class="card-text">$${p.price}</p>
+            </div>
+          </div>
+        `
+      });
+
+      bsOffcanvas.show();
+    })
+    .catch(err => console.error(err));
+}

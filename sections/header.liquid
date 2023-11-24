@@ -54,8 +54,17 @@
       </ul>
 
       <form class="my-auto" action="/search" method="get" role="search">
-        <input class="form-control rounded-0 form-control-lg" type="search" name="q" value="{{ search.terms | escape }}">
+        <input class="form-control rounded-0 form-control-lg" type="search" name="q" value="{{ search.terms | escape }}" id="searchInputField">
       </form>
     </div>
   </div>
 </nav>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSearchResult" aria-labelledby="offcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasLabel">Search Results</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body" id="searchResultsBody">
+  </div>
+</div>
