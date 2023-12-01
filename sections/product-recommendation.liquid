@@ -1,0 +1,31 @@
+<div class="container">
+  <section id="productRecomendation" class="row justify-content-center my-5">
+    <h3 class="text-center">You may also like</h3>
+    <div id="productRecomendationBody" class="row"></div>
+  </section>
+</div>
+
+<script>
+  const recommendationsContainer = document.getElementById('productRecomendationBody');
+  let contents = '';
+
+  fetch('/recommendations/products.json?product_id={{product.id}}')
+    .then(res => res.json())
+    .then(({ products }) => {
+      if (products.length) {
+        products.forEach(p => {
+          let card = '<div class="col-3 g-2">';
+          card += '<div class="card" style="width: 18rem">';
+
+          if (p.images.length) {
+            card += `<img class="card-img-top" src=${p.images[0]}>`;
+          }
+          card += `<div class='card-body'>
+            <h4 class=text-center><a href="${p.url}">${p.title}</a></h4>
+          </div>`
+          card += '</div></div>';
+          recommendationsContainer.innerHTML += card;
+        });
+      }
+    });
+</script>
